@@ -1,4 +1,4 @@
-package Decorator;
+package Patterns.Decorator;
 
 public class Decorator {
 
@@ -15,8 +15,8 @@ public class Decorator {
 }
 
 /**
- * What is a Decorator in Java?
- * A Decorator in Java is a structural design pattern that allows behavior to be added to
+ * What is a Patterns.Decorator in Java?
+ * A Patterns.Decorator in Java is a structural design pattern that allows behavior to be added to
  * individual objects dynamically, without modifying the existing class code.
  *
  * It follows the principle of composition over inheritance.
