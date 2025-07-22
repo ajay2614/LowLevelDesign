@@ -1,4 +1,4 @@
-package LLDProjects.ProxyDesign;
+package Patterns.ProxyDesign;
 
 public interface Database {
 

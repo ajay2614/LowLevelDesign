@@ -1,4 +1,4 @@
-package LLDProjects.AdapterDesignPattern;
+package Patterns.AdapterDesignPattern;
 
 
 /**

@@ -1,0 +1,112 @@
+Facade Design Pattern
+Purpose: To simplify access to a complex system.
+Intent: Hides internal complexity by combining or simplifying multiple operations from multiple classes.
+Example: CarAFacade gives a simplified interface for using CarA.
+It might internally call multiple methods of CarA, but the user just sees 1 or 2 easy methods.
+
+@startuml Facade
+class User
+
+class CarA {
+    +start()
+    +stop()
+    +drive()
+    +changeGear(gear)
+    +refuel()
+}
+
+class CarAFacade {
+    +startCar()
+    +driveCar()
+    +stopCar()
+    -automaticChangeGear()
+}
+
+User --> CarAFacade : uses
+CarAFacade --> CarA : delegates to
+@enduml
+
+Proxy Design Pattern
+Purpose: To control access to an object (like a security guard or wrapper).
+Intent: Adds a layer before accessing the real object — for lazy loading, logging, access control, caching, etc.
+Example: A BankProxy class checks authentication before calling RealBank.withdraw().
+BankProxy looks like a Bank but adds access control or logging before calling RealBank.
+User calls withdraw() on the proxy, which controls access and optionally calls the real method.
+
+@startuml Proxy
+interface Bank {
+    +withdraw(amount)
+}
+
+class RealBank implements Bank {
+    +withdraw(amount)
+}
+
+class BankProxy implements Bank {
+    -realBank : RealBank
+    +withdraw(amount)
+}
+
+class User
+
+User --> BankProxy : calls withdraw()
+BankProxy --> RealBank : delegates if allowed
+@enduml
+
+Adapter Design Pattern
+Purpose: To convert one interface to another so that incompatible types can work together.
+Intent: Make two incompatible interfaces compatible.
+Example: A MediaAdapter converts a VlcPlayer to work with an AudioPlayer that expects the MediaPlayer interface.
+The user tries to play a file using AudioPlayer, which supports only certain formats.
+When the format (e.g., VLC) isn't supported directly, AudioPlayer internally uses a MediaAdapter to
+adapt the call to VlcPlayer.
+
+@startuml Adapter
+interface MediaPlayer {
+    +play(audioType, fileName)
+}
+
+class VlcPlayer {
+    +playVlc(fileName)
+}
+
+class MediaAdapter implements MediaPlayer {
+    -vlcPlayer : VlcPlayer
+    +play(audioType, fileName)
+}
+
+class AudioPlayer {
+    +play(audioType, fileName)
+}
+
+class User
+
+User --> AudioPlayer : calls play()
+AudioPlayer --> MediaAdapter : uses if needed
+MediaAdapter --> VlcPlayer : adapts call
+@enduml
+
+✅ Facade Pattern
+Hides complexity of multiple classes
+Provides a simple interface
+Used to simplify usage of a system
+Client interacts only with the facade, not internal classes
+Doesn’t change interface, just combines multiple calls
+Example: CarFacade.startCar() internally does refuel(), start(), changeGear()
+
+🛡️ Proxy Pattern
+Controls access to a real object
+Used for logging, access control, lazy loading
+Interface stays the same
+Client thinks it’s calling the real object
+May add extra behavior before/after forwarding the call
+Example: BankProxy.withdraw() checks authentication, then calls RealBank.withdraw()
+
+🔌 Adapter Pattern
+Connects two incompatible interfaces
+Converts one interface into another expected by the client
+Used for legacy system integration or API mismatch
+Client is aware it's working through an adapter
+Doesn’t simplify or secure — it makes incompatible things compatible
+
+Example: MediaAdapter.play("vlc", "file") adapts to VlcPlayer.playVlc("file")
