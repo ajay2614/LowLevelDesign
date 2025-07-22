@@ -1,4 +1,4 @@
-package LLDProjects.ProxyDesign;
+package Patterns.ProxyDesign;
 
 public class DatabaseImpl implements Database {
 
