@@ -1,0 +1,73 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' ========================
+' BRIDGE IMPLEMENTATION
+' ========================
+
+' Implementation Interface
+interface Movement {
+    +move(): void
+}
+
+' Concrete Movement types
+class OnRoad implements Movement
+class OnTrack implements Movement
+class InAir implements Movement
+
+Movement <|.. OnRoad
+Movement <|.. OnTrack
+Movement <|.. InAir
+
+' ========================
+' ABSTRACTION
+' ========================
+
+' Abstract Transport that uses Movement (Composition)
+abstract class Transport {
+    -movement: Movement
+    +Transport(m: Movement)
+    +performMove(): void
+    +describe(): void
+}
+
+' Concrete Transport types
+class Bus extends Transport
+class Train extends Transport
+class Plane extends Transport
+
+Transport <|-- Bus
+Transport <|-- Train
+Transport <|-- Plane
+
+' Composition (HAS-A relationship)
+Transport o-- Movement
+
+' ===============================================
+' COMMENTS: WHY THIS WORKS BETTER THAN INHERITANCE
+' ===============================================
+' ❌ If we used inheritance alone:
+'     - BusOnRoad, BusOnTrack, BusInAir
+'     - TrainOnTrack, TrainOnRoad...
+'     - Explosion of subclasses!
+'
+' ✅ With Bridge:
+'     - Add new Transport (e.g., FlyingCar) -> Just extend Transport
+'     - Add new Movement (e.g., Hovering) -> Just implement Movement
+'     - Combine freely without changing existing classes
+
+' ✅ Example: Flying Car
+class FlyingCar extends Transport
+FlyingCar -[#green,dashed]-> InAir : uses
+
+@enduml
+
+❌ Inheritance-only would force us to make separate classes like BusOnTrack, BusInAir, BusOnRoad, leading to a combinatorial explosion of subclasses.
+
+✅ Bridge Pattern avoids this by decoupling the Transport type from how it moves (Movement).
+
+You can now add:
+
+A new Transport like FlyingCar without modifying existing movement types.
+A new Movement like Hovering without changing or subclassing existing transports.
+Just plug and play via composition.
